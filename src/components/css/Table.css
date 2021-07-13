@@ -1,0 +1,33 @@
+.table {
+    overflow:scroll ;
+    height: 400px;
+    background-color: #4e4e4e;
+    color: aliceblue;
+    scroll-snap-type: y mandatory;
+}
+.table::-webkit-scrollbar{
+    display: none;
+}
+.table > tr > td > img{
+    width: 21px;
+    object-fit: contain;
+    margin: 0;
+    margin-right: 21px;
+    
+   
+}
+
+.table > tr > td{
+    scroll-snap-align: start;
+    padding:0.5rem;
+}
+
+.table tr:nth-of-type(odd){
+    filter: brightness(0.9);
+}
+
+.table tr{
+    display: flex;
+    justify-content: space-between;
+    /* border-bottom: 1px solid gray; */
+}

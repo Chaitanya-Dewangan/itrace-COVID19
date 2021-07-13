@@ -1,0 +1,13 @@
+.infoBox{
+    width:100%;
+    max-width:600px;
+    min-width:90px;
+    background-color: #333 !important;
+    margin:12px;
+    filter: brightness(0.8);
+    transition: filter 300ms ease-in;
+    padding-bottom: 21px gray;
+}
+.infoBox:hover{
+    filter: brightness(1);
+}

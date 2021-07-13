@@ -1,23 +1,126 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useState, useEffect } from "react";
+import {
+  FormControl,
+  Select,
+  MenuItem,
+  Card,
+  CardContent,
+} from "@material-ui/core";
+import InfoBox from "./components/InfoBox";
+import Map from "./components/Map";
+import Table from "./components/Table";
+import LineGraph from "./components/LineGraph";
+import {sortData } from "./util";
 
 function App() {
+  const [countries, setCountries] = useState([]);
+  const [country, setCountry] = useState("worldwide");
+  const [countryInfo, setCountryInfo] = useState({});
+  const [tableData, setTableData] = useState([]);
+
+  useEffect(() => {
+    fetch("https://corona.lmao.ninja/v3/covid-19/all")
+    .then(response => response.json())
+    .then(data => {
+      setCountryInfo(data);
+    })
+  }, [])
+
+  useEffect(() => {
+    const getCountriesData = async () => {
+      await fetch("https://corona.lmao.ninja/v3/covid-19/countries")
+        ?.then((response) => response.json())
+        ?.then((data) => {
+          const countries = data.map((country) => ({
+            name: country.country,
+            value: country.countryInfo.iso2,
+            flag:country.countryInfo.flag
+          }));
+          const sortedData =sortData(data);
+          setTableData(sortedData);
+          setCountries(countries);
+        });
+    };
+    getCountriesData();
+  }, []);
+  const onCountryChange = async (event) => {
+    const countryCode = event.target.value;
+    setCountry(countryCode);
+
+    const url =
+      countryCode === "worldwide"
+        ? "https://corona.lmao.ninja/v3/covid-19/all"
+        : `https://corona.lmao.ninja/v3/covid-19/countries/${countryCode}`;
+    await fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      setCountry(countryCode);
+      setCountryInfo(data);
+
+    })
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <div className="app__left">
+        <div className="app__header">
+          <h1>iTracer</h1>
+          <FormControl>
+            <Select
+              onChange={onCountryChange}
+              variant="outlined"
+              className="app__select"
+              value={country}
+            >
+              <MenuItem value="worldwide" className=" app__selectMenu">
+                Worldwide
+              </MenuItem>
+              {countries?.map((country) => (
+                <MenuItem className="app__menu" value={country.value}>
+                  {country.name}{" "}
+                  <img
+                    className="app__menuFlag"
+                    src={country.flag}
+                    alt={country.name}
+                  />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
+
+        <div className="app__stats">
+          <InfoBox
+            bgColor="#f7d881"
+            title="Covid-19 cases"
+            cases={countryInfo.todayCases}
+            total={countryInfo.cases}
+          />
+          <InfoBox
+            bgColor="#8bd483"
+            title="Recovered"
+            cases={countryInfo.todayRecovered}
+            total={countryInfo.recovered}
+          />
+          <InfoBox
+            bgColor="#ff6f68"
+            title="Deaths"
+            cases={countryInfo.todayDeaths}
+            total={countryInfo.deaths}
+          />
+        </div>
+        <Map />
+      </div>
+      <div className="app__right">
+        <Card className="app__right">
+          <CardContent className="app__rightCardContent">
+          
+            <Table countries={tableData} />
+            <LineGraph/>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
