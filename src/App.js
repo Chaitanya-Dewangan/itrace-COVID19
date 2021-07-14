@@ -8,26 +8,28 @@ import {
   CardContent,
 } from "@material-ui/core";
 import InfoBox from "./components/InfoBox";
-import Map from "./components/Map";
 import Table from "./components/Table";
 import LineGraph from "./components/LineGraph";
 import {sortData } from "./util";
+import {prettyPrintStat } from "./util";
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState("worldwide");
   const [countryInfo, setCountryInfo] = useState({});
   const [tableData, setTableData] = useState([]);
-
+  const [casesType, setCasesType] = useState("cases");
   useEffect(() => {
-    fetch("https://corona.lmao.ninja/v3/covid-19/all")
+    const fetchData = async () => {
+    await fetch("https://corona.lmao.ninja/v3/covid-19/all")
     .then(response => response.json())
     .then(data => {
       setCountryInfo(data);
-    })
+    })}
+    fetchData();
   }, [])
-
   useEffect(() => {
+    
     const getCountriesData = async () => {
       await fetch("https://corona.lmao.ninja/v3/covid-19/countries")
         ?.then((response) => response.json())
@@ -40,6 +42,7 @@ function App() {
           const sortedData =sortData(data);
           setTableData(sortedData);
           setCountries(countries);
+          
         });
     };
     getCountriesData();
@@ -92,32 +95,34 @@ function App() {
 
         <div className="app__stats">
           <InfoBox
+            onClick={(e) => setCasesType("cases")}
             bgColor="#f7d881"
             title="Covid-19 cases"
-            cases={countryInfo.todayCases}
-            total={countryInfo.cases}
+            cases={prettyPrintStat(countryInfo.todayCases)}
+            total={prettyPrintStat(countryInfo.cases)}
           />
           <InfoBox
+            onClick={(e) => setCasesType("recovered")}
             bgColor="#8bd483"
             title="Recovered"
-            cases={countryInfo.todayRecovered}
-            total={countryInfo.recovered}
+            cases={prettyPrintStat(countryInfo.todayRecovered)}
+            total={prettyPrintStat(countryInfo.recovered)}
           />
           <InfoBox
+            onClick={(e) => setCasesType("deaths")}
             bgColor="#ff6f68"
             title="Deaths"
-            cases={countryInfo.todayDeaths}
-            total={countryInfo.deaths}
+            cases={prettyPrintStat(countryInfo.todayDeaths)}
+            total={prettyPrintStat(countryInfo.deaths)}
           />
         </div>
-        <Map />
       </div>
       <div className="app__right">
         <Card className="app__right">
           <CardContent className="app__rightCardContent">
-          
             <Table countries={tableData} />
-            <LineGraph/>
+            <h3>Worldwide new {casesType}</h3>
+            <LineGraph casesType={casesType} />
           </CardContent>
         </Card>
       </div>

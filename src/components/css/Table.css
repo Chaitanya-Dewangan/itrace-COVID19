@@ -23,11 +23,16 @@
 }
 
 .table tr:nth-of-type(odd){
-    filter: brightness(0.9);
+    background-color: #6b6b6b3d;
 }
 
 .table tr{
     display: flex;
     justify-content: space-between;
     /* border-bottom: 1px solid gray; */
+}
+.tableHeading{
+    display:flex;
+    justify-content: space-between;
+    color: #131313;
 }

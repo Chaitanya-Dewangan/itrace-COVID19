@@ -2,12 +2,15 @@ import React,{useState,useEffect} from 'react';
 import { Line } from "react-chartjs-2";
 import numeral from "numeral";
 import "./css/LineGraph.css";
+import Skeleton from "@material-ui/lab/Skeleton";
 
 
 const options = {
-  legend: {
-    display: false,
-  },
+  plugins:{   
+    legend: {
+    display: false
+            },
+    },
   elements: {
     point: {
       radius: 0,
@@ -50,8 +53,14 @@ const options = {
 };
 
 function LineGraph({ casesType="cases" }) {
-  
+  const [lineColor,setLineColor]=useState("#f7d881");
+      if(casesType==="cases"){setLineColor("#f7d881");}
+      if(casesType==="recovered"){setLineColor("#8bd483");}
+      if(casesType==="deaths"){setLineColor("#ff6f68");}
+
+    
     const [data, setData] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
     const buildChartData = (data, casesType) => {
     let chartData = [];
     let lastDataPoint;
@@ -69,6 +78,7 @@ function LineGraph({ casesType="cases" }) {
     };
 
     useEffect(() => {
+      setIsLoading(true);
       const fetchData = async () => {
         await fetch(
           "https://disease.sh/v3/covid-19/historical/all?lastdays=120"
@@ -79,27 +89,35 @@ function LineGraph({ casesType="cases" }) {
           .then((data) => {
             let chartData = buildChartData(data, casesType);
             setData(chartData);
+            setIsLoading(false);
           });
       };
-
+      
       fetchData();
+      
     }, [casesType]);
-
+    
   return (
     <div className="lineGraph">
-      {data?.length > 0 && (
-        <Line
-          data={{
-            datasets: [
-              {
-                backgroundColor: "rgba(204, 16, 52, 0.5)",
-                borderColor: "#CC1034",
-                data: data,
-              },
-            ],
-          }}
-          options={options}
-        />
+      {isLoading ? (
+        <Skeleton animation="wave" height={330} />
+      ) : (
+        data?.length > 0 && (
+          <Line
+            data={{
+              datasets: [
+                {
+                  backgroundColor: `${lineColor}a3`,
+                  // borderColor: "#CC1034",
+                  borderColor: `${lineColor}`,
+                  data: data,
+                  fill: true,
+                },
+              ],
+            }}
+            options={options}
+          />
+        )
       )}
     </div>
   );

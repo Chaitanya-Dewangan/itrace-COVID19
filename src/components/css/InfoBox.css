@@ -1,4 +1,4 @@
-.infoBox{
+/* .infoBox{
     width:100%;
     max-width:600px;
     min-width:90px;
@@ -7,7 +7,15 @@
     filter: brightness(0.8);
     transition: filter 300ms ease-in;
     padding-bottom: 21px gray;
-}
+}*/
 .infoBox:hover{
     filter: brightness(1);
+} 
+
+.infoBox{
+    flex:1;
+    filter: brightness(0.8);
+}
+.infoBox:not(:last-child){
+    margin-right: 15px;
 }
