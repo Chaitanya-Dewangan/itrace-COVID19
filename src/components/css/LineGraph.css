@@ -1,10 +1,10 @@
 .lineGraph{
-    height:210px;
-    width:450px;
+    height:auto;
+    width:96%;
 }
 @media screen and (max-width:990px){
     .lineGraph{
-    height:270px;
+    height:auto;
     width:100%;
     }
 }

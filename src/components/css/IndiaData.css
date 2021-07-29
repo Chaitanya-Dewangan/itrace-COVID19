@@ -1,0 +1,90 @@
+.indiaData{
+    display:flex;
+    justify-content: space-evenly;
+}
+
+/* Text Color */
+.indiaData__header > h1{
+    color: rgba(255, 255, 255, 0.671);
+}
+.indiaData__header > h1 > strong{
+    color: rgba(179, 177, 100, 0.979);
+}
+
+.indiaData__headerSelect{
+    color:white !important;
+    background-color: rgba(255, 255, 255, 0.274);
+    height:45px;
+}
+
+/* Container */
+.indiaData__left{
+    flex:0.9;
+}
+.indiaData__header{
+    display: flex;
+    justify-content: space-between;
+    margin:9px 12px;
+}
+.indiaData__stats{
+    display: flex;
+}
+
+
+.indiaData__rightTable{
+    
+    color: white;
+    margin: 12px;
+    padding: 21px;
+    border-radius: 18px;
+    background-color: rgba(255, 255, 255, 0.109);
+    overflow:scroll ;
+    scroll-snap-type: y mandatory;
+    height: 84vh;
+}
+.indiaData__rightTable::-webkit-scrollbar{
+    display: none;
+}
+
+.indiaData__rightTable > tr{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding:  9px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.123);
+    
+}
+
+.indiaData__rightTable > tr > td{
+    scroll-snap-align: start;
+    padding:0.5rem;
+    font-weight: bold;
+}
+.indiaData__rightHeading{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color:rgba(255, 255, 255, 0.541);
+    margin: 0 12px;
+}
+.indiaData__rightHeading > h1{
+    font-weight: bold;
+    font-variant: small-caps;
+    
+
+}
+@media (max-width:990px) {
+    .indiaData{
+        flex-direction: column;
+    }
+    .indiaData__left{
+        margin:0 12px;
+    }
+    .indiaData__right{
+        margin:0 12px;
+    }
+}
+
+/* body{
+    background-color: rgb(23, 47, 38);
+} */

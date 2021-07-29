@@ -8,6 +8,10 @@
     transition: filter 300ms ease-in;
     padding-bottom: 21px gray;
 }*/
+:root{
+    --card-transition :all 600ms ease;
+    --border-left:  #ff6f68;
+}
 .infoBox:hover{
     filter: brightness(1);
 } 
@@ -15,7 +19,22 @@
 .infoBox{
     flex:1;
     filter: brightness(0.8);
+    cursor: pointer;
+    border-bottom: 9px ;
+    transition:var(--card-transition);
 }
+.infoBoxCard{
+    transition:var(--card-transition);
+}
+
 .infoBox:not(:last-child){
     margin-right: 15px;
+}
+.infoBox--selected{
+    border-left: 15px solid rgb(255, 255, 255);
+    /* color: white; */
+}
+.infoBoxMain--selected{
+    filter: brightness(1);
+    /* color: white; */
 }

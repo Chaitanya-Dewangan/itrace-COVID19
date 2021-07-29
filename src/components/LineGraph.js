@@ -52,51 +52,67 @@ const options = {
   },
 };
 
-function LineGraph({ casesType="cases" }) {
-  const [lineColor,setLineColor]=useState("#f7d881");
-      if(casesType==="cases"){setLineColor("#f7d881");}
-      if(casesType==="recovered"){setLineColor("#8bd483");}
-      if(casesType==="deaths"){setLineColor("#ff6f68");}
+function LineGraph({ casesType = "cases", country }) {
+  let lineColor = "#f7d881";
+  if (casesType === "cases") {
+    lineColor = "#f7d881";
+  }
+  if (casesType === "recovered") {
+    lineColor = "#56f96a";
+  }
+  if (casesType === "deaths") {
+    lineColor = "#ff524a";
+  }
 
-    
-    const [data, setData] = useState({});
-    const [isLoading, setIsLoading] = useState(false);
-    const buildChartData = (data, casesType) => {
+  const [data, setData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const buildChartData = (data, casesType) => {
     let chartData = [];
     let lastDataPoint;
-    for (let date in data.cases) {
-        if (lastDataPoint) {
+    for (let date in country === "worldwide" ? data?.cases : data?.timeline?.cases) {
+      if (lastDataPoint) {
         let newDataPoint = {
-            x: date,
-            y: data[casesType][date] - lastDataPoint,
+          x: date,
+          y:
+            country === "worldwide"
+              ? data[casesType][date] - lastDataPoint
+              : data["timeline"][casesType][date] - lastDataPoint,
         };
         chartData.push(newDataPoint);
-        }
-        lastDataPoint = data[casesType][date];
+      }
+      lastDataPoint =
+        country === "worldwide"
+          ? data[casesType][date]
+          : data["timeline"][casesType][date];
     }
     return chartData;
+  };
+
+  useEffect(() => {
+    
+    const worldwide =
+      "https://disease.sh/v3/covid-19/historical/all?lastdays=120";
+    const url = `${
+      country === "worldwide"
+        ? "https://disease.sh/v3/covid-19/historical/all?lastdays=120"
+        : `https://disease.sh/v3/covid-19/historical/${country}?lastdays=120`
+    }`;
+    const fetchData = async () => {
+      setIsLoading(true);
+      await fetch(url) 
+        ?.then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          let chartData = buildChartData(data, casesType);
+          setData(chartData);
+          setIsLoading(false);
+        });
     };
 
-    useEffect(() => {
-      setIsLoading(true);
-      const fetchData = async () => {
-        await fetch(
-          "https://disease.sh/v3/covid-19/historical/all?lastdays=120"
-        )
-          .then((response) => {
-            return response.json();
-          })
-          .then((data) => {
-            let chartData = buildChartData(data, casesType);
-            setData(chartData);
-            setIsLoading(false);
-          });
-      };
-      
-      fetchData();
-      
-    }, [casesType]);
-    
+    fetchData();
+  }, [casesType,country]);
+
   return (
     <div className="lineGraph">
       {isLoading ? (
@@ -116,9 +132,9 @@ function LineGraph({ casesType="cases" }) {
               ],
             }}
             options={options}
-          />
-        )
-      )}
+          /> 
+          )
+          )}
     </div>
   );
 }

@@ -27,9 +27,13 @@
   margin-top: 6px;
   border-radius:6px;
 }
+.app__right  h3{
+  color: #ffffff9d;
+
+}
 .app__rightCardContent{
   
-  background-color: #4e4e4e;
+  background-color: var(--table-bg-color);
 }
 .app__rightCardContent > .table{
   margin:12px;
@@ -38,8 +42,9 @@
 
 
 .MuiCard-root {
-    background-color: #4e4e4e;
+    background-color: var(--table-bg-color) !important;
     border-radius: 15px !important;
+    box-shadow: 7px 5px 11px 0px #0e0e0e85;
 }
 @media only screen and (max-width:450px) {
   .app__stats{
@@ -49,15 +54,25 @@
   }
 }
 
+.app__selectMenuIndia > img{
+  object-fit:contain;
+  width:24px;
+
+}
 
 .app__stats{
     display:flex;
     margin:12px 21px;
 }
 
+.app__selectIndia img{
+  object-fit:contain;
+  width:24px;
+  margin-left:12px;
+}
 
 body{
-  background-color: #161616;
+  background-color: #130a21;
 }
 
 .app__menu{
@@ -84,3 +99,15 @@ body{
   }
 }
 
+.app__stateCases{
+  flex:1;
+  display: flex;
+  padding:21px;
+  border-radius: 9px;
+  background-color: #170c24;
+  margin:9px 18px;
+  height: 30em;
+}
+:root{
+  --table-bg-color:#170c24;
+}

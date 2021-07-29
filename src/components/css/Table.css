@@ -1,7 +1,7 @@
 .table {
     overflow:scroll ;
     height: 400px;
-    background-color: #4e4e4e;
+    background-color: var(--table-bg-color);
     color: aliceblue;
     scroll-snap-type: y mandatory;
 }
@@ -23,7 +23,7 @@
 }
 
 .table tr:nth-of-type(odd){
-    background-color: #6b6b6b3d;
+    background-color: rgba(255, 255, 255, 0.041);
 }
 
 .table tr{
@@ -34,5 +34,5 @@
 .tableHeading{
     display:flex;
     justify-content: space-between;
-    color: #131313;
+    color: #fff;
 }

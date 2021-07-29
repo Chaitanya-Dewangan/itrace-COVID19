@@ -6,7 +6,7 @@ import {Card,CardContent,Typography} from "@material-ui/core";
 
 
 
-function InfoBox({ title, cases, total ,active, bgColor,...props}) {
+function InfoBoxState({ title, cases, total ,active, bgColor,...props}) {
   
   return (
     <Card
@@ -19,7 +19,7 @@ function InfoBox({ title, cases, total ,active, bgColor,...props}) {
         style={{ backgroundColor: `${bgColor ? bgColor : "#333"}` }}
       >
         <Typography className="infoBox__title" color="textSecondary">
-          {title}
+          {title ? title : "Covid19 cases"}
         </Typography>
         <h1 className="infoBox__cases">
           {cases ? `+${cases}` : "000"}
@@ -33,4 +33,4 @@ function InfoBox({ title, cases, total ,active, bgColor,...props}) {
   );
 }
 
-export default InfoBox;
+export default InfoBoxState;
